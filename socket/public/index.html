@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat APP</title>
+  </head>
+  <body>
+    <h1>Chatting</h1>
+    <!-- <button onclick="createConnection()">Create WS Connection</button> -->
+    <!-- this script load the socket.io-client -->
+    <input type="text" placeholder="Enter message" id="message" />
+
+    <div id="msg"></div>
+
+    <button id="sendBtn">Send</button>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      // function createConnection() {
+      //   var socket = io();
+      // }
+      const socket = io();
+      const sendBtn = document.getElementById("sendBtn");
+      const messageInput = document.getElementById("message");
+
+      const allMessages = document.getElementById("msg");
+
+      socket.on("message", (message) => {
+        // by server
+        // console.log("Message Recieved From Server: ", message);
+
+        const p = document.createElement("p");
+        p.innerText = message;
+        allMessages.appendChild(p);
+      });
+
+      sendBtn.addEventListener("click", () => {
+        const message = messageInput.value;
+        console.log(message);
+        socket.emit("user-message", message); // send to server
+      });
+    </script>
+  </body>
+</html>
